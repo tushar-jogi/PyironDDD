@@ -33,6 +33,10 @@ class ParaDis(TemplateJob):
         #    subprocess.run(args, shell=True, capture_output=True)
             #subprocess.run("cat paradisgen.log", shell=True, capture_output=True)
 
+        if self._datafilename is None:
+            raise ValueError("job._datafilename is not set")
+        if self._ctrlfilename is None:
+            raise ValueError("job._ctrlfilename is not set")
         self.executable = f"paradis -d {self._datafilename} {self._ctrlfilename} > paradis.log"
 
     def write_input(self):
@@ -94,7 +98,7 @@ class ParaDis(TemplateJob):
               'saveprop =   %d\n'%(self._ctrlparams["saveprop"]) + \
               'savepropfreq =   %d\n'%(self._ctrlparams["savepropfreq"])
         self._ctrlargs = str
-        with open(self.working_directory + "/" + self._ctrlfilename, "w") as f:
+        with open(os.path.join(self.working_directory, self._ctrlfilename), "w") as f:
             f.write(self._ctrlargs)
 
     def write_datafile(self):
@@ -148,7 +152,7 @@ domainDecomposition =
                 0.              1.              1.
 """
             self._dataargs = str
-            with open(self.working_directory + "/" + self._datafilename, "w") as f:
+            with open(os.path.join(self.working_directory, self._datafilename), "w") as f:
                 f.write(self._dataargs)
 
         else:
