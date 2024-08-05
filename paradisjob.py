@@ -3,6 +3,7 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 import subprocess
+from string import Template
 
 ### TODO 
 
@@ -43,63 +44,33 @@ class ParaDis(TemplateJob):
         self.write_ctrlfile()
         self.write_datafile()
 
-    def write_ctrlfile(self):
-        appsts = self._ctrlparams["appliedStress"]
+    @staticmethod
+    def translate_dict(d):
+        """
+        Convert a dictionary to a format that can be written to a file
 
-        str = '####################################################\n' +\
-              '#   This ctrl file is generated using the module   #\n' +\
-              '#   provided in pyiron workflow.                   #\n' +\
-              '#                                                  #\n' +\
-              '#   Author : Tushar Jogi                           #\n' +\
-              '####################################################\n' +\
-              'dirname =  "%s"\n'%(self._ctrlparams["dirname"]) + \
-              '# Domain geometry\n' + \
-              'numXdoms =   %d\n'%(self._ctrlparams["numdomains"][0]) + \
-              'numYdoms =   %d\n'%(self._ctrlparams["numdomains"][1]) + \
-              'numZdoms =   %d\n'%(self._ctrlparams["numdomains"][2]) + \
-              '# Cell geometry\n' + \
-              'numXcells =   %d\n'%(self._ctrlparams["numcells"][0]) + \
-              'numYcells =   %d\n'%(self._ctrlparams["numcells"][1]) + \
-              'numZcells =   %d\n'%(self._ctrlparams["numcells"][2]) + \
-              '# Dynamic load balancing\n' + \
-              'fmEnabled       = %d\n'%(self._ctrlparams["fmEnabled"]) + \
-              'fmMPOrder       = %d\n'%(self._ctrlparams["fmMPOrder"]) + \
-              'fmTaylorOrder   = %d\n'%(self._ctrlparams["fmTaylorOrder"]) + \
-              'fmCorrectionTbl = "%s"\n'%(self._ctrlparams["fmCorrectionTbl"]) + \
-              '# Discretization and topological controls\n' + \
-              'maxstep =   %d\n'%(self._ctrlparams["maxstep"]) + \
-              'remeshRule =   %d\n'%(self._ctrlparams["remeshRule"]) + \
-              'minSeg =   %e\n'%(self._ctrlparams["minSeg"]) + \
-              'maxSeg =   %e\n'%(self._ctrlparams["maxSeg"]) + \
-              'rTol =   %e\n'%(self._ctrlparams["rTol"]) + \
-              'timestepIntegrator =   "%s"\n'%(self._ctrlparams["timestepIntegrator"]) + \
-              '# Mobility parameters\n' +\
-              'rc =   %e\n'%(self._ctrlparams["rc"]) + \
-              'MobScrew =   %e\n'%(self._ctrlparams["MobScrew"]) + \
-              'MobEdge =   %e\n'%(self._ctrlparams["MobEdge"]) + \
-              'MobClimb =   %e\n'%(self._ctrlparams["MobClimb"]) + \
-              'mobilityLaw =   "%s"\n'%(self._ctrlparams["mobilityLaw"]) + \
-              '# Loading conditions\n' +\
-              'loadType =   %d\n'%(self._ctrlparams["loadType"]) + \
-              'edotdir = [\n\t\t\t%e\n\t\t\t%e\n\t\t\t%e\n\t\t\t]\n'%(self._ctrlparams["edotdir"][0],\
-               self._ctrlparams["edotdir"][1], self._ctrlparams["edotdir"][2]) + \
-              'appliedStress = [\n\t\t\t%e\n\t\t\t%e\n\t\t\t%e\n\t\t\t%e\n\t\t\t%e\n\t\t\t%e\n\t\t\t]\n'\
-               %(appsts[0], appsts[1], appsts[2], appsts[3], appsts[4], appsts[5]) + \
-              '# I/O controls\n' +\
-              'savecn =   %d\n'%(self._ctrlparams["savecn"]) + \
-              'savecnfreq =   %d\n'%(self._ctrlparams["savecnfreq"]) + \
-              'savecncounter =   %d\n'%(self._ctrlparams["savecncounter"]) + \
-              'gnuplot =   %d\n'%(self._ctrlparams["gnuplot"]) + \
-              'gnuplotfreq =   %d\n'%(self._ctrlparams["gnuplotfreq"]) + \
-              'gnuplotcounter =   %d\n'%(self._ctrlparams["gnuplotcounter"]) + \
-              'povray =   %d\n'%(self._ctrlparams["povray"]) + \
-              'povrayfreq =   %d\n'%(self._ctrlparams["povrayfreq"]) + \
-              'povraycounter =   %d\n'%(self._ctrlparams["povraycounter"]) + \
-              'saveprop =   %d\n'%(self._ctrlparams["saveprop"]) + \
-              'savepropfreq =   %d\n'%(self._ctrlparams["savepropfreq"])
-        self._ctrlargs = str
+        Args:
+            d (dict): Dictionary to be converted
+        """
+        d_result = {}
+        for key, value. in d.items():
+            # if value is list or numpy array, convert it to a string
+            if isinstance(value, (list, np.ndarray)):
+                for ii, item in enumerate(value):
+                    d_result[f"{key}_{ii}"] = item
+            else:
+                d_result[key] = value
+        return d_result
+
+    def write_ctrlfile(self):
         with open(os.path.join(self.working_directory, self._ctrlfilename), "w") as f:
-            f.write(self._ctrlargs)
+            template = Template(f.read())
+
+        # Substitute the placeholders with actual values
+        output_str = template.substitute(self.translate_dict(self._ctrlparams))
+
+        with open(os.path.join(self.working_directory, self._ctrlfilename), "w") as f:
+            f.write(output_str)
 
     def write_datafile(self):
         #file_path = os.path.join(self.working_directory,"frank_read_src.data")
