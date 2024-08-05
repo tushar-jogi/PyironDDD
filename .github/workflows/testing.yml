@@ -1,31 +1,32 @@
-name: Run Unit Tests
 
-on: [push, pull_request]
+name: Unit Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
-  test:
+  build:
+    env:
+      CONDA_PREFIX: /usr/share/miniconda/
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-
-    - name: Set up Python
-      uses: actions/setup-python@v2
+    - uses: actions/checkout@v2
+    - uses: conda-incubator/setup-miniconda@v2.2.0
       with:
-        python-version: '3.11'  # Specify the Python version you need
-
-    - name: Install conda
-      uses: conda-incubator/setup-miniconda@v2
-      with:
+        python-version: "3.11"
+        mamba-version: "*"
+        miniforge-variant: Mambaforge
+        channels: conda-forge
+        channel-priority: strict
         auto-update-conda: true
-        activate-environment: default  # Ensure this matches the environment name in your yml file
         environment-file: .ci_support/environment.yml
-        python-version: 3.11  # Ensure this matches the python version you need
-
-    - name: Run tests
+    - name: Setup
+      shell: bash -l {0}
       run: |
-        conda init
-        conda activate default
-        python -m unittest discover -s tests -p "test_paradis.py"
-
+        pip install --no-deps .
+    - name: Test
+      shell: bash -l {0}
+      run: python -m unittest discover tests/unit
