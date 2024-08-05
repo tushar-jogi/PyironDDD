@@ -13,7 +13,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: '3.8'  # Specify the Python version you need
+        python-version: '3.11'  # Specify the Python version you need
 
     - name: Install conda
       uses: conda-incubator/setup-miniconda@v2
@@ -21,7 +21,7 @@ jobs:
         auto-update-conda: true
         activate-environment: default  # Ensure this matches the environment name in your yml file
         environment-file: .ci_support/environment.yml
-        python-version: 3.8  # Ensure this matches the python version you need
+        python-version: 3.11  # Ensure this matches the python version you need
 
     - name: Run tests
       run: |
