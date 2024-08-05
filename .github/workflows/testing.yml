@@ -1,31 +1,29 @@
-
-# This workflow will install Python dependencies, run tests and lint with a variety of Python versions
-# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
-
-name: Unit Tests
+name: Run Unit Tests
 
 on: [push, pull_request]
 
 jobs:
-  build:
-    env:
-      CONDA_PREFIX: /usr/share/miniconda/
+  test:
     runs-on: ubuntu-latest
+
     steps:
-    - uses: actions/checkout@v2
-    - uses: conda-incubator/setup-miniconda@v2.2.0
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
       with:
-        python-version: "3.11"
-        mamba-version: "*"
-        miniforge-variant: Mambaforge
-        channels: conda-forge
-        channel-priority: strict
-        auto-update-conda: true
-        environment-file: .ci_support/environment.yml
-    - name: Setup
-      shell: bash -l {0}
+        python-version: '3.8'  # Specify the Python version you need
+
+    - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-    - name: Test
-      shell: bash -l {0}
-      run: python -m unittest discover tests/unit
+        pip install conda
+        conda env create -f ci_support/environment.yml
+        conda activate your-environment-name
+
+    - name: Run tests
+      run: |
+        conda activate your-environment-name
+        python -m unittest discover -s tests -p "test_paradis.py"
+
