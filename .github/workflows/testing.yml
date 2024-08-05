@@ -20,10 +20,10 @@ jobs:
         python -m pip install --upgrade pip
         pip install conda
         conda env create -f ci_support/environment.yml
-        conda activate your-environment-name
+        conda activate default
 
     - name: Run tests
       run: |
-        conda activate your-environment-name
+        conda activate default
         python -m unittest discover -s tests -p "test_paradis.py"
 
