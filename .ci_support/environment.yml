@@ -1,0 +1,5 @@
+name: default
+channels:
+  - conda-forge
+dependencies:
+  - numpy
