@@ -20,7 +20,7 @@ jobs:
       with:
         auto-update-conda: true
         activate-environment: default  # Ensure this matches the environment name in your yml file
-        environment-file: ci_support/environment.yml
+        environment-file: .ci_support/environment.yml
         python-version: 3.8  # Ensure this matches the python version you need
 
     - name: Run tests
