@@ -3,3 +3,4 @@ channels:
   - conda-forge
 dependencies:
   - pyiron_base =0.9.11
+  - matplotlib =3.9.1

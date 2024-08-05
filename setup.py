@@ -12,5 +12,6 @@ setup(
     packages=find_packages(exclude=["*tests*"]),
     install_requires=[
         'pyiron_base==0.9.10',
+        'matplotlib==3.9.1',
     ],
 )
