@@ -25,6 +25,7 @@ jobs:
 
     - name: Run tests
       run: |
+        conda init
         conda activate default
         python -m unittest discover -s tests -p "test_paradis.py"
 
