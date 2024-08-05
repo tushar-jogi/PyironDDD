@@ -25,7 +25,7 @@ jobs:
     - name: Setup
       shell: bash -l {0}
       run: |
-        pip install --no-deps .
+        python -m pip install --upgrade pip
     - name: Test
       shell: bash -l {0}
       run: python -m unittest discover tests/unit
