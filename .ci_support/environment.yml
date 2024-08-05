@@ -2,4 +2,4 @@ name: default
 channels:
   - conda-forge
 dependencies:
-  - numpy
+  - pyiron_base =0.9.11
