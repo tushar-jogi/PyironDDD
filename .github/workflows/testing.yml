@@ -25,7 +25,6 @@ jobs:
 
     - name: Run tests
       run: |
-        source $CONDA/../etc/profile.d/conda.sh
-        conda activate test-environment  # Ensure this matches the environment name in your yml file
+        conda activate default
         python -m unittest discover -s tests -p "test_paradis.py"
 
