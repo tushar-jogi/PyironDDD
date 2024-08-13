@@ -1,0 +1,60 @@
+####################################################
+#   This ctrl file is generated using the module   #
+#   provided in pyiron workflow.                   #
+#                                                  #
+#   Author : Tushar Jogi                           #
+####################################################
+dirname =  "${dirname}"
+# Domain geometry
+numXdoms =   ${numdomains_0}
+numYdoms =   ${numdomains_1}
+numZdoms =   ${numdomains_2}
+# Cell geometry
+numXcells =   ${numcells_0}
+numYcells =   ${numcells_1}
+numZcells =   ${numcells_2}
+# Dynamic load balancing
+fmEnabled       = ${fmEnabled}
+fmMPOrder       = ${fmMPOrder}
+fmTaylorOrder   = ${fmTaylorOrder}
+fmCorrectionTbl = "${fmCorrectionTbl}"
+# Discretization and topological controls
+maxstep =   ${maxstep}
+remeshRule =   ${remeshRule}
+minSeg =   ${minSeg}
+maxSeg =   ${maxSeg}
+rTol =   ${rTol}
+timestepIntegrator =   "${timestepIntegrator}"
+# Mobility parameters
+rc =   ${rc}
+MobScrew =   ${MobScrew}
+MobEdge =   ${MobEdge}
+MobClimb =   ${MobClimb}
+mobilityLaw =   "${mobilityLaw}"
+# Loading conditions
+loadType =   ${loadType}
+edotdir = [
+            ${edotdir_0}
+            ${edotdir_1}
+            ${edotdir_2}
+           ]
+appliedStress = [
+            ${appliedStress_0}
+            ${appliedStress_1}
+            ${appliedStress_2}
+            ${appliedStress_3}
+            ${appliedStress_4}
+            ${appliedStress_5}
+           ]
+# I/O controls
+savecn =   ${savecn}
+savecnfreq =   ${savecnfreq}
+savecncounter =   ${savecncounter}
+gnuplot =   ${gnuplot}
+gnuplotfreq =   ${gnuplotfreq}
+gnuplotcounter =   ${gnuplotcounter}
+povray =   ${povray}
+povrayfreq =   ${povrayfreq}
+povraycounter =   ${povraycounter}
+saveprop =   ${saveprop}
+savepropfreq =   ${savepropfreq}
