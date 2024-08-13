@@ -1,4 +1,4 @@
-from pyiron_base import TemplateJob, ImportAlarm, Project
+from pyiron_base import TemplateJob
 import os
 import numpy as np
 import matplotlib.pyplot as plt
@@ -53,7 +53,7 @@ class ParaDis(TemplateJob):
             d (dict): Dictionary to be converted
         """
         d_result = {}
-        for key, value. in d.items():
+        for key, value in d.items():
             # if value is list or numpy array, convert it to a string
             if isinstance(value, (list, np.ndarray)):
                 for ii, item in enumerate(value):
